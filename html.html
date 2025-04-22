@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Assistant Pro - Smart Automation for Your Business</title>
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #25D366;
+            --primary-dark: #128C7E;
+            --secondary: #075E54;
+            --light: #f5f5f5;
+            --dark: #333;
+            --gray: #666;
+            --light-gray: #e0e0e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        
+        p {
+            margin-bottom: 1.5rem;
+        }
+        
+        a {
+            text-decoration: none;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        a:hover {
+            color: var(--secondary);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border-radius: 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        section {
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+        
+        header.scrolled {
+            background: white;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            width: 50%;
+            padding-right: 50px;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--gray);
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .phone-container {
+            width: 50%;
+            position: relative;
+            height: 600px;
+            perspective: 1000px;
+        }
+        
+        .phone {
+            position: absolute;
+            width: 300px;
+            height: 600px;
+            background: #111;
+            border-radius: 40px;
+            padding: 15px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            transform-style: preserve-3d;
+            transform: rotateY(-15deg) rotateX(10deg);
+            transition: all 0.5s ease;
+        }
+        
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #e5ddd5;
+            border-radius: 25px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 20px;
+            background: #111;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            z-index: 10;
+        }
+        
+        /* WhatsApp Chat Simulation */
+        .chat-header {
+            background: var(--secondary);
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .chat-header .contact {
+            display: flex;
+            align-items: center;
+        }
+        
+        .chat-header .contact-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--light-gray);
+            margin-right: 10px;
+        }
+        
+        .chat-messages {
+            padding: 15px;
+            height: calc(100% - 120px);
+            overflow-y: auto;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABnSURBVDhP7dDBCYAwDEXR7KSDuJebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebuZebiY8zQJv1wAAAABJRU5ErkJggg==');
+            background-repeat: repeat;
+        }
+        
+        .message {
+            max-width: 70%;
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 7.5px;
+            font-size: 14px;
+            position: relative;
+            clear: both;
+        }
+        
+        .incoming {
+            background: white;
+            float: left;
+        }
+        
+        .outgoing {
+            background: #dcf8c6;
+            float: right;
+        }
+        
+        .chat-input {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+        }
+        
+        /* Features Section */
+        .features {
+            background: white;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--secondary);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: var(--light);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        /* Dashboard Preview Section */
+        .dashboard-preview {
+            background: linear-gradient(135deg, #075E54 0%, #128C7E 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dashboard-preview .section-title {
+            color: white;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .dashboard-content {
+            width: 50%;
+        }
+        
+        .dashboard-image {
+            width: 50%;
+            position: relative;
+            height: 400px;
+            perspective: 1000px;
+        }
+        
+        .dashboard-screen {
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            transform-style: preserve-3d;
+            transform: rotateY(-10deg) rotateX(5deg);
+            overflow: hidden;
+        }
+        
+        .dashboard-nav {
+            background: var(--secondary);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .dashboard-nav h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        .dashboard-table {
+            padding: 15px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        th {
+            background: #f5f5f5;
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background: #f9f9f9;
+        }
+        
+        /* Pricing Section */
+        .pricing {
+            background: white;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .pricing-card {
+            background: var(--light);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pricing-header {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+        }
+        
+        .pricing-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .price span {
+            font-size: 1rem;
+            font-weight: 400;
+        }
+        
+        .pricing-body {
+            padding: 30px;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .pricing-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .cta p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: var(--gray);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .footer-links h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links ul li a {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .footer-links ul li a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Parallax Effects */
+        .parallax-phone {
+            transition: transform 0.5s ease-out;
+        }
+        
+        .parallax-dashboard {
+            transition: transform 0.5s ease-out;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-content, .phone-container, .dashboard-content, .dashboard-image {
+                width: 100%;
+            }
+            
+            .hero {
+                height: auto;
+                padding: 150px 0 100px;
+                flex-direction: column;
+            }
+            
+            .hero-content {
+                padding-right: 0;
+                margin-bottom: 50px;
+                text-align: center;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .phone-container {
+                height: 500px;
+            }
+            
+            .features-grid, .pricing-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .features-grid, .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container header-container">
+            <a href="#" class="logo">WhatsApp <span>Assistant</span></a>
+            <nav>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#" class="btn btn-outline">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Automate Your WhatsApp Business Communications</h1>
+                <p>Streamline your customer interactions, manage campaigns, and track leads with our powerful WhatsApp assistant platform. Save time and boost engagement with smart automation.</p>
+                <div class="hero-buttons">
+                    <a href="#pricing" class="btn">Get Started</a>
+                    <a href="#features" class="btn btn-outline">Learn More</a>
+                </div>
+            </div>
+            <div class="phone-container">
+                <div class="phone parallax-phone">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <div class="chat-header">
+                            <div class="contact">
+                                <div class="contact-avatar"></div>
+                                <div>Customer Support</div>
+                            </div>
+                            <div>...</div>
+                        </div>
+                        <div class="chat-messages" id="chat-messages">
+                            <!-- Messages will be added via JavaScript -->
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" placeholder="Type a message">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title text-center">Powerful Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Campaign Management</h3>
+                    <p>Create, schedule, and track WhatsApp campaigns with detailed analytics on sent, delivered, and read messages.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Lead Tracking</h3>
+                    <p>Organize and manage your leads with custom statuses and follow-up reminders to never miss an opportunity.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>Smart Automation</h3>
+                    <p>Set up automated responses, greetings, and follow-ups to engage customers 24/7 without manual effort.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📅</div>
+                    <h3>Calendar Integration</h3>
+                    <p>Sync appointments and reminders with your calendar to stay organized and never miss important events.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3>Kanban Boards</h3>
+                    <p>Visualize your workflow with drag-and-drop kanban boards to manage tasks and conversations efficiently.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Secure & Private</h3>
+                    <p>Enterprise-grade security ensures your data and customer information are always protected.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Preview Section -->
+    <section class="dashboard-preview" id="dashboard">
+        <div class="container">
+            <h2 class="section-title text-center">Intuitive Dashboard</h2>
+            <div class="dashboard-container">
+                <div class="dashboard-content">
+                    <h3>Everything You Need in One Place</h3>
+                    <p>Our clean, organized dashboard gives you complete control over your WhatsApp communications. Monitor campaigns, track leads, and manage conversations from a single interface.</p>
+                    <p>Real-time updates and comprehensive analytics help you make data-driven decisions to improve customer engagement.</p>
+                    <a href="#pricing" class="btn">Try It Free</a>
+                </div>
+                <div class="dashboard-image">
+                    <div class="dashboard-screen parallax-dashboard">
+                        <div class="dashboard-nav">
+                            <h3>Campañas</h3>
+                            <div>NUEVO</div>
+                        </div>
+                        <div class="dashboard-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nombre ↑</th>
+                                        <th>Mensajes</th>
+                                        <th>Recibidos</th>
+                                        <th>Vistos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>test2</td>
+                                        <td>1</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>test3</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2 class="section-title text-center">Simple, Transparent Pricing</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Starter</h3>
+                        <div class="price">$19<span>/month</span></div>
+                        <p>Perfect for small businesses</p>
+                    </div>
+                    <div class="pricing-body">
+                        <ul class="pricing-features">
+                            <li>Up to 500 messages/month</li>
+                            <li>Basic campaign management</li>
+                            <li>Lead tracking</li>
+                            <li>Email support</li>
+                        </ul>
+                        <a href="#" class="btn">Get Started</a>
+                    </div>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header" style="background: var(--secondary);">
+                        <h3>Professional</h3>
+                        <div class="price">$49<span>/month</span></div>
+                        <p>Best for growing businesses</p>
+                    </div>
+                    <div class="pricing-body">
+                        <ul class="pricing-features">
+                            <li>Up to 2,000 messages/month</li>
+                            <li>Advanced campaign tools</li>
+                            <li>Automation workflows</li>
+                            <li>Calendar integration</li>
+                            <li>Priority support</li>
+                        </ul>
+                        <a href="#" class="btn" style="background: var(--secondary);">Get Started</a>
+                    </div>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Enterprise</h3>
+                        <div class="price">$99<span>/month</span></div>
+                        <p>For large-scale operations</p>
+                    </div>
+                    <div class="pricing-body">
+                        <ul class="pricing-features">
+                            <li>10,000+ messages/month</li>
+                            <li>Unlimited campaigns</li>
+                            <li>Advanced analytics</li>
+                            <li>Team collaboration</li>
+                            <li>Dedicated account manager</li>
+                            <li>24/7 support</li>
+                        </ul>
+                        <a href="#" class="btn">Get Started</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Transform Your WhatsApp Business?</h2>
+            <p>Join thousands of businesses already using WhatsApp Assistant to streamline their communications and grow their customer base.</p>
+            <a href="#pricing" class="btn">Start Your Free Trial</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-links">
+                    <a href="#" class="footer-logo">WhatsApp Assistant</a>
+                    <p>Powerful automation tools to grow your business through WhatsApp communications.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Product</h3>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#">Integrations</a></li>
+                        <li><a href="#">Updates</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 WhatsApp Assistant. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample messages for the chat simulation
+        const messages = [
+            { text: "Hello! I'm interested in your services.", incoming: true, delay: 1000 },
+            { text: "Great! What specifically are you looking for?", incoming: false, delay: 2000 },
+            { text: "I need help with WhatsApp automation for my small business.", incoming: true, delay: 3000 },
+            { text: "We have perfect solutions for that. Would you like me to send you more information?", incoming: false, delay: 4000 },
+            { text: "Yes, please! That would be very helpful.", incoming: true, delay: 5000 }
+        ];
+
+        // Function to add messages to the chat
+        function addMessages() {
+            const chatContainer = document.getElementById('chat-messages');
+            
+            messages.forEach((message, index) => {
+                setTimeout(() => {
+                    const messageElement = document.createElement('div');
+                    messageElement.classList.add('message');
+                    messageElement.classList.add(message.incoming ? 'incoming' : 'outgoing');
+                    messageElement.textContent = message.text;
+                    chatContainer.appendChild(messageElement);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }, message.delay);
+            });
+        }
+
+        // Initialize the chat when page loads
+        window.addEventListener('load', () => {
+            addMessages();
+            
+            // Repeat the messages every 8 seconds
+            setInterval(() => {
+                const chatContainer = document.getElementById('chat-messages');
+                chatContainer.innerHTML = '';
+                addMessages();
+            }, 8000);
+        });
+
+        // Parallax effect for the phone
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollY;
+            const phone = document.querySelector('.parallax-phone');
+            const dashboard = document.querySelector('.parallax-dashboard');
+            
+            // Phone parallax effect
+            if (phone) {
+                const phoneOffset = scrollPosition * 0.2;
+                phone.style.transform = `rotateY(-15deg) rotateX(10deg) translateY(${phoneOffset}px)`;
+            }
+            
+            // Dashboard parallax effect
+            if (dashboard) {
+                const dashboardOffset = scrollPosition * 0.1;
+                dashboard.style.transform = `rotateY(-10deg) rotateX(5deg) translateY(${dashboardOffset}px)`;
+            }
+            
+            // Header scroll effect
+            const header = document.getElementById('header');
+            if (scrollPosition > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
